@@ -1,8 +1,10 @@
 package com.ecommerce.backend.controller;
 
+import com.ecommerce.backend.dto.LoginRequest;
 import com.ecommerce.backend.model.Customer;
 import com.ecommerce.backend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,5 +30,12 @@ public class CustomerController {
     public ResponseEntity<Void> deleteCustomerById(@PathVariable Long id) {
         customerService.deleteCustomerById(id);
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest) {
+        if (customerService.authenticate(loginRequest)) {
+            return "Login Sucessful";
+        }
+        return "Login Falied";
     }
 }
