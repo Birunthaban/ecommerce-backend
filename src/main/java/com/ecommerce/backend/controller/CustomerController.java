@@ -32,7 +32,7 @@ public class CustomerController {
         return ResponseEntity.noContent().build();
     }
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
+    public String login(@RequestBody LoginRequest  loginRequest) {
         if (customerService.authenticate(loginRequest)) {
             return "Login Sucessful";
         }
