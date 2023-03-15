@@ -14,6 +14,17 @@ public class Customer {
     private String phoneNumber ;
     private Boolean status ;
 
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    @Column(name = "otp", length = 6)
+    private String otp;
+
     public int getId() {
         return id;
     }

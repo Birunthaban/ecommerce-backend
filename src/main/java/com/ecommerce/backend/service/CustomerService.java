@@ -17,6 +17,7 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+
     public List<Customer> getAllCustomers(){
 
         return customerRepository.findAll();
@@ -38,4 +39,39 @@ public class CustomerService {
         }
         return false;
     }
+    public Customer register(Customer customer) {
+        String encryptedPassword=passwordEncoder.encode(customer.getPassword());
+
+        EmailService emailService=new EmailService();
+
+        // Generate OTP
+        String otp = emailService.generateOtp();
+        customer.setOtp(otp);
+        customer.setStatus(false);
+        customer.setPassword(encryptedPassword);
+
+        // Save user
+        Customer savedUser = customerRepository.save(customer);
+
+        // Send OTP email
+        emailService.sendOtpEmail(customer.getEmail(), otp);
+
+        return savedUser;
+    }
+    public boolean verifyOtp(String email, String otp) {
+        Customer customer = customerRepository.findByEmail(email);
+        if (customer == null) {
+            return false;
+        }
+
+        if (customer.getOtp().equals(otp)) {
+            customer.setStatus(true);
+            customerRepository.save(customer);
+            return true;
+        }
+
+        return false;
+    }
+
+
 }
