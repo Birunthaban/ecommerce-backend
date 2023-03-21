@@ -20,22 +20,20 @@ public class Product {
     private float productPrice;
     @Column(name="Product_Description",nullable = false)
     private String productDescription;
-    @Column(name="Made_In",nullable = false)
-    private String madeInCountry;
+
     @Column(name="Product_Category",nullable = false)
     private  String productCategory;
-    @Column(name="Age_Group",nullable = false)
-    private String ageGroup;
 
-    public Product(int productId, String productName, int productQut, float productPrice, String productDescription, String madeInCountry, String productCategory, String ageGroup) {
+
+    public Product(int productId, String productName, int productQut, float productPrice, String productDescription, String productCategory) {
         this.productId = productId;
         this.productName = productName;
         this.productQut = productQut;
         this.productPrice = productPrice;
         this.productDescription = productDescription;
-        this.madeInCountry = madeInCountry;
+
         this.productCategory = productCategory;
-        this.ageGroup = ageGroup;
+
     }
 
     public Product() {
@@ -82,13 +80,7 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public String getMadeInCountry() {
-        return madeInCountry;
-    }
 
-    public void setMadeInCountry(String madeInCountry) {
-        this.madeInCountry = madeInCountry;
-    }
 
     public String getProductCategory() {
         return productCategory;
@@ -98,11 +90,6 @@ public class Product {
         this.productCategory = productCategory;
     }
 
-    public String getAgeGroup() {
-        return ageGroup;
+
     }
 
-    public void setAgeGroup(String ageGroup) {
-        this.ageGroup = ageGroup;
-    }
-}
