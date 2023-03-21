@@ -31,7 +31,6 @@ public class Product {
         this.productQut = productQut;
         this.productPrice = productPrice;
         this.productDescription = productDescription;
-
         this.productCategory = productCategory;
 
     }
