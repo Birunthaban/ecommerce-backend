@@ -47,6 +47,11 @@ import java.util.List;
             }
             return ResponseEntity.noContent().build();
         }
+        @GetMapping("/search")
+        public ResponseEntity<List<Product>> searchProducts(@RequestParam("query") String name) {
+            List<Product> productList = productService.searchProducts(name);
+            return new ResponseEntity<>(productList, HttpStatus.OK);
+        }
     }
 
 
