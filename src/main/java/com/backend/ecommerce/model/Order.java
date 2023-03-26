@@ -25,6 +25,19 @@ public class Order {
         private List<OrderItem> orderItems = new ArrayList<>();
 
         // constructors, getters and setters
+    private Double TotalAmount;
+
+    public Double getTotalAmount() {
+        return TotalAmount;
+    }
+
+    public void setTotalAmount() {
+        Double totalAmount = (double) 0;
+        for (OrderItem item : this.orderItems) {
+            totalAmount+=item.getOrderedProductPrice();
+        }
+        this.TotalAmount =totalAmount ;
+    }
 
     public Long getId() {
         return id;

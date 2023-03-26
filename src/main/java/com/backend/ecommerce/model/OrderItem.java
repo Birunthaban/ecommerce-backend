@@ -21,7 +21,17 @@ public class OrderItem {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    // constructors, getters and setters
+    private double orderedProductPrice;
+
+    public double getOrderedProductPrice() {
+        return orderedProductPrice;
+    }
+
+    public void setOrderedProductPrice(Product product ) {
+        double price = product.getPrice()*this.getQuantity();
+        this.orderedProductPrice =price;
+    }
+// constructors, getters and setters
 
     public Long getId() {
         return id;
