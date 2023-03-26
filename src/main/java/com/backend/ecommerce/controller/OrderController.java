@@ -22,12 +22,5 @@ public class OrderController {
         orderService.saveOrder(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        boolean deleted = orderService.deleteOrder();
-        if (!deleted) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.noContent().build();
-    }
+
 }
