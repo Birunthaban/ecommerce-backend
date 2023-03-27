@@ -9,18 +9,23 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/order")
 public class OrderController {
     private OrderService orderService ;
-    @GetMapping
+    @GetMapping("/orders")
     public ResponseEntity<List<Order>> getAllOrders() {
         List<Order> orders = orderService.getAllOrders();
-        return ResponseEntity.ok(orders);
+        return ResponseEntity.ok().body(orders);
     }
-    @PostMapping("/save")
-    public ResponseEntity<Order> addProduct(@RequestBody Order order) {
-        orderService.saveOrder(order);
-        return ResponseEntity.status(HttpStatus.CREATED).body(order);
+    @PostMapping("/orders")
+    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+        Order savedOrder = orderService.saveOrder(order);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        orderService.deleteOrderById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

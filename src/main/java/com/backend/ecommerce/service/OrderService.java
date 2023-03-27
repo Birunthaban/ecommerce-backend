@@ -8,6 +8,7 @@ import com.backend.ecommerce.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -38,14 +39,11 @@ public class OrderService {
     public List<Order> getAllOrders(){
         return orderRepository.findAll();
     }
-    public List<Order> getOrdersByUserId(Long Id){
-        return orderRepository.findByUserId(Id);
-    }
-    public void deleteOrder(Order order) {
-        // Delete all order items associated with the order
-        orderItemRepository.deleteAll(order.getOrderItems());
+    public void deleteOrderById(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + id));
 
-        // Delete the order
+        orderItemRepository.deleteAll(order.getOrderItems());
         orderRepository.delete(order);
     }
 }
