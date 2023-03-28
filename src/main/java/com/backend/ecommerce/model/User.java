@@ -29,25 +29,19 @@ import java.util.List;
   private String email;
   private String password;
 
-  private String otp;
-
-  public String getOtp() {
-    return otp;
-  }
-
-  public void setOtp(String otp) {
-    this.otp = otp;
-  }
+  @Column(name = "verification_token")
+  private String verificationToken;
 
   public Boolean getStatus() {
     return status;
   }
+  private Boolean status;
+
 
   public void setStatus(Boolean status) {
     this.status = status;
   }
 
-  private Boolean status;
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;

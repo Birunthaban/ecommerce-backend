@@ -5,7 +5,6 @@ package com.backend.ecommerce.service;
 import com.backend.ecommerce.dto.Request.AuthenticationRequest;
 import com.backend.ecommerce.dto.Request.RegisterRequest;
 import com.backend.ecommerce.dto.Response.AuthenticationResponse;
-import com.backend.ecommerce.email.EmailService;
 import com.backend.ecommerce.error.UserAlreadyExistsException;
 import com.backend.ecommerce.model.User;
 import com.backend.ecommerce.repository.TokenRepository;

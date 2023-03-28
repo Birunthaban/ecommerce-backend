@@ -21,7 +21,7 @@ public class OrderController {
         Order savedOrder = orderService.saveOrder(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/orders/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         orderService.deleteOrderById(id);
         return ResponseEntity.noContent().build();

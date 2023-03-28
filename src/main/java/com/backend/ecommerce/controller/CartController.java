@@ -18,7 +18,6 @@ public class CartController {
     public CartService cartService;
 
     @PostMapping(path="product")
-    @RequestBody
     public List<Cart> showCart(@RequestParam Integer id)
     {
         return cartService.showCart(id);

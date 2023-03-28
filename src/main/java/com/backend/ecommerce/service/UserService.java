@@ -1,7 +1,6 @@
 package com.backend.ecommerce.service;
 
 
-import com.backend.ecommerce.email.EmailService;
 import com.backend.ecommerce.model.User;
 import com.backend.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
