@@ -6,6 +6,7 @@ import com.backend.ecommerce.model.User;
 import com.backend.ecommerce.repository.OrderRepository;
 import com.backend.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -28,36 +29,24 @@ public class EmailService {
     private JavaMailSender javaMailSender;
     @Autowired
     private OrderRepository orderRepository;
+    @Value("${app.url}")
+    private String appUrl;
+    public void sendVerificationEmail(String email, String verificationToken) {
+        String subject = "Please verify your email address";
+        String verificationLink = appUrl + "/verify-email?token=" + verificationToken;
+        String body = "Please click on this link to verify your email address: " + verificationLink;
 
-    public String generateOtp() {
-        Random random = new Random();
-        int otpValue = 100000 + random.nextInt(900000);
-        return String.valueOf(otpValue);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject(subject);
+        message.setText(body);
+
+        javaMailSender.send(message);
     }
 
-    public void sendOtpEmail(String email, String otp) {
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(email);
-        msg.setSubject("OTP for registration");
-        msg.setText("Your OTP is: " + otp);
 
-        javaMailSender.send(msg);
-    }
 
-//    public boolean verifyOtp(String email, String otp) {
-//        Optional<User> saveduUser=userRepo.findByEmail(email);
-//        if (saveduUser == null) {
-//            return false;
-//        }
-//
-//        if (saveduUser.get().getOtp().equals(otp)) {
-//            saveduUser.get().setStatus(true);
-//            userRepo.save(saveduUser.get());
-//            return true;
-//        }
-//
-//        return false;
-//    }
+
     public MimeMessage createConfirmationMessage(Long order_id,String email) throws MessagingException {
         Optional<Order> existingOrder=orderRepository.findById(order_id);
         if(!existingOrder.isPresent()){

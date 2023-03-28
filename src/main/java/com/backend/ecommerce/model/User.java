@@ -29,6 +29,14 @@ import java.util.List;
   private String email;
   private String password;
 
+  public String getVerificationToken() {
+    return verificationToken;
+  }
+
+  public void setVerificationToken(String verificationToken) {
+    this.verificationToken = verificationToken;
+  }
+
   @Column(name = "verification_token")
   private String verificationToken;
 

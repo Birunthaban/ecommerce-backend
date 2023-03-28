@@ -29,32 +29,11 @@ public class UserService {
         user.setPassword(encryptedPassword);
         return userRepo.save(user);
     }
-    public User register(User user) {
-        String encryptedPassword=passwordEncoder.encode(user.getPassword());
-        // Generate OTP
-        String otp = mailService.generateOtp();
-        user.setOtp(otp);
-        user.setStatus(false);
-        user.setPassword(encryptedPassword);
-
-        // Save user
-        User savedUser = userRepo.save(user);
-
-        // Send OTP email
-        mailService.sendOtpEmail(user.getEmail(), otp);
-
-        return savedUser;
-    }
 
 
 
-//    public boolean authenticate(@RequestBody com.group02.mobileshopsystem.api.Payload.Request.AuthenticationRequest loginRequest) {
-//        User user = userRepo.findByEmail(loginRequest.getEmail());
-//        if (user != null && passwordEncoder.matches(loginRequest.getPassword(),user.getPassword())) {
-//            return true;
-//        }
-//        return false;
-//    }
+
+
     public void deleteUserById(Integer id) {
         userRepo.deleteById(id);
     }

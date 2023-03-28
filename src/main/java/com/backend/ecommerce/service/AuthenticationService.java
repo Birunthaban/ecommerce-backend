@@ -17,6 +17,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -36,17 +38,17 @@ public class AuthenticationService {
     if(repository.existsByEmail(request.getEmail())) {
       throw new UserAlreadyExistsException("User with this email already exists.");
     }
-    String otp = emailService.generateOtp();
+    String verificationToken = UUID.randomUUID().toString();;
     var user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
         .email(request.getEmail())
             .status(false)
-            .otp(otp)
+            .verificationToken(verificationToken)
         .password(passwordEncoder.encode(request.getPassword()))
         .build();
     var savedUser = repository.save(user);
-    emailService.sendOtpEmail(user.getEmail(), otp);
+    emailService.sendVerificationEmail(user.getEmail(),verificationToken);
     var jwtToken = jwtService.generateToken(user);
     saveUserToken(savedUser, jwtToken);
     return AuthenticationResponse.builder()
