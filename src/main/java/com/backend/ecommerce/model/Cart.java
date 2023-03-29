@@ -1,65 +1,48 @@
 package com.backend.ecommerce.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name="NewCart")
-
+@Table(name = "carts")
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="cart_id",length = 5)
-    public Integer cart_id;
-    //userid -> id
-    @Column(name="id",length = 5)
-    public Integer id;
-    @Column(name="product_id",length = 5)
-    public Integer product_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name="quantity",length = 5)
-    private Integer quantity;
 
-    public Cart(Integer cart_id, Integer id, Integer product_id, Integer quantity) {
-        this.cart_id = cart_id;
-        this.id = id;
-        this.product_id = product_id;
-        this.quantity = quantity;
-    }
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    public Cart() {
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    private List<CartItem> items;
 
-    }
-
-    public Integer getCart_id() {
-        return cart_id;
-    }
-
-    public void setCart_id(Integer cart_id) {
-        this.cart_id = cart_id;
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getProduct_id() {
-        return product_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setProduct_id(Integer product_id) {
-        this.product_id = product_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public List<CartItem> getItems() {
+        return items;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setItems(List<CartItem> items) {
+        this.items = items;
     }
+
+
+
 }

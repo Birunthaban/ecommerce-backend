@@ -27,14 +27,7 @@ public class UserController {
    }
 
 
-    @PostMapping("/verify")
-    public ResponseEntity<String> verifyOtp(@RequestParam String email, @RequestParam String otp) {
-        if (mailService.verifyOtp(email, otp)) {
-            return ResponseEntity.ok("OTP verified successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid OTP");
-        }
-    }
+
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteCustomerById(@PathVariable Integer id) {
       userService.deleteUserById(id);
