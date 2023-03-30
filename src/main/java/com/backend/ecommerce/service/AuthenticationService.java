@@ -57,6 +57,30 @@ public class AuthenticationService {
         .token(jwtToken)
         .build();
   }
+  public AuthenticationResponse registerAdmin(RegisterRequest request) {
+    boolean userExists = repository.existsByEmail(request.getEmail());
+
+    if(repository.existsByEmail(request.getEmail())) {
+      throw new UserAlreadyExistsException("User with this email already exists.");
+    }
+    String verificationToken = UUID.randomUUID().toString();;
+    var user = User.builder()
+            .firstname(request.getFirstname())
+            .lastname(request.getLastname())
+            .email(request.getEmail())
+            .status(false)
+            .verificationToken(verificationToken)
+            .password(passwordEncoder.encode(request.getPassword()))
+            .role(Role.ADMIN)
+            .build();
+    var savedUser = repository.save(user);
+    emailService.sendVerificationEmail(user.getEmail(),verificationToken);
+    var jwtToken = jwtService.generateToken(user);
+    saveUserToken(savedUser, jwtToken);
+    return AuthenticationResponse.builder()
+            .token(jwtToken)
+            .build();
+  }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
     authenticationManager.authenticate(
