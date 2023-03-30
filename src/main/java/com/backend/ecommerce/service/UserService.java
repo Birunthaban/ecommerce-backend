@@ -13,7 +13,7 @@ import java.util.List;
 public class UserService {
 
     @Autowired
-    private UserRepository userRepo;
+    private UserRepository userRepository;
 
     @Autowired
     private EmailService mailService;
@@ -21,16 +21,16 @@ public class UserService {
     BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 
     public List<User> getAllUser(){
-        return userRepo.findAll();
+        return userRepository.findAll();
     }
     public User addUser(User user) {
 
         String encryptedPassword=passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
-        return userRepo.save(user);
+        return userRepository.save(user);
     }
     public void deleteUserById(Integer id) {
-        userRepo.deleteById(id);
+        userRepository.deleteById(id);
     }
 }
 
