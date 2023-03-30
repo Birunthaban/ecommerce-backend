@@ -2,6 +2,7 @@ package com.backend.ecommerce.model;
 
 
 import com.backend.ecommerce.token.Token;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +29,8 @@ import java.util.List;
   private String lastname;
   private String email;
   private String password;
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
   public String getVerificationToken() {
     return verificationToken;
@@ -36,7 +39,7 @@ import java.util.List;
   public void setVerificationToken(String verificationToken) {
     this.verificationToken = verificationToken;
   }
-
+@JsonIgnore
   @Column(name = "verification_token")
   private String verificationToken;
 
@@ -51,8 +54,11 @@ import java.util.List;
   }
 
 
+
+@JsonIgnore
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

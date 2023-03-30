@@ -6,6 +6,7 @@ import com.backend.ecommerce.dto.Request.AuthenticationRequest;
 import com.backend.ecommerce.dto.Request.RegisterRequest;
 import com.backend.ecommerce.dto.Response.AuthenticationResponse;
 import com.backend.ecommerce.exception.UserAlreadyExistsException;
+import com.backend.ecommerce.model.Role;
 import com.backend.ecommerce.model.User;
 import com.backend.ecommerce.repository.TokenRepository;
 import com.backend.ecommerce.repository.UserRepository;
@@ -32,7 +33,7 @@ public class AuthenticationService {
 
 
 
-  public AuthenticationResponse register(RegisterRequest request) {
+  public AuthenticationResponse registerUser(RegisterRequest request) {
     boolean userExists = repository.existsByEmail(request.getEmail());
 
     if(repository.existsByEmail(request.getEmail())) {
@@ -46,6 +47,7 @@ public class AuthenticationService {
             .status(false)
             .verificationToken(verificationToken)
         .password(passwordEncoder.encode(request.getPassword()))
+            .role(Role.USER)
         .build();
     var savedUser = repository.save(user);
     emailService.sendVerificationEmail(user.getEmail(),verificationToken);
