@@ -21,7 +21,9 @@ public class OrderService {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
+    @Autowired
     private EmailService emailService;
+    @Autowired
     private CartRepository cartRepository;
 
     @Transactional

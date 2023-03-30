@@ -4,8 +4,10 @@ import com.backend.ecommerce.model.Address;
 import com.backend.ecommerce.model.Cart;
 import com.backend.ecommerce.model.Order;
 import com.backend.ecommerce.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class CheckoutService {
+    @Autowired
     private EmailService emailService;
     private OrderService orderService;
 
