@@ -5,6 +5,7 @@ import com.backend.ecommerce.dto.Request.AuthenticationRequest;
 import com.backend.ecommerce.dto.Request.RegisterRequest;
 import com.backend.ecommerce.dto.Response.AuthenticationResponse;
 import com.backend.ecommerce.exception.UserAlreadyExistsException;
+import com.backend.ecommerce.exception.UserNotVerifiedException;
 import com.backend.ecommerce.model.Role;
 import com.backend.ecommerce.model.User;
 import com.backend.ecommerce.repository.TokenRepository;
@@ -31,31 +32,28 @@ public class AuthenticationService {
     private final EmailService emailService;
 
 
-    public AuthenticationResponse registerUser(RegisterRequest request) {
+    public String registerUser(RegisterRequest request) {
         boolean userExists = repository.existsByEmail(request.getEmail());
 
         if (repository.existsByEmail(request.getEmail())) {
             throw new UserAlreadyExistsException("User with this email already exists.");
         }
         String verificationToken = UUID.randomUUID().toString();
-        ;
+
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .status(false)
-                .verificationToken(verificationToken)
+                .link(verificationToken)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
         var savedUser = repository.save(user);
         emailService.sendVerificationEmail(user.getEmail(), verificationToken);
-        var jwtToken = jwtService.generateToken(user);
-        saveUserToken(savedUser, jwtToken);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+        return "Verify you email" ;
     }
+
 
     public AuthenticationResponse registerAdmin(RegisterRequest request) {
         boolean userExists = repository.existsByEmail(request.getEmail());
@@ -70,7 +68,7 @@ public class AuthenticationService {
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .status(false)
-                .verificationToken(verificationToken)
+                .link(verificationToken)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ADMIN)
                 .build();
@@ -93,6 +91,9 @@ public class AuthenticationService {
         // check whether user verified or not....
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
+        if (user.getStatus()==false){
+            throw new UserNotVerifiedException("User Didn't verify");
+        }
         var jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);

@@ -27,11 +27,9 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .antMatchers("/auth/**")
-                .permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest()
-                .authenticated()
+                .permitAll()
+
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -27,22 +27,24 @@ public class User implements UserDetails {
     private Integer id;
     private String firstname;
     private String lastname;
+    @Column
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @JsonIgnore
+
+    private String link;
 
     public String getVerificationToken() {
-        return verificationToken;
+        return link;
     }
 
     public void setVerificationToken(String verificationToken) {
-        this.verificationToken = verificationToken;
+        this.link = verificationToken;
     }
 
-    @JsonIgnore
-    @Column(name = "verification_token")
-    private String verificationToken;
+
 
     public Boolean getStatus() {
         return status;

@@ -34,7 +34,7 @@ public class EmailService {
 
     public void sendVerificationEmail(String email, String verificationToken) {
         String subject = "Please verify your email address";
-        String verificationLink = appUrl + "/verify-email?token=" + verificationToken;
+        String verificationLink = appUrl + "/auth/verify?token=" + verificationToken;
         String body = "Please click on this link to verify your email address: " + verificationLink;
 
         SimpleMailMessage message = new SimpleMailMessage();
@@ -44,7 +44,6 @@ public class EmailService {
 
         javaMailSender.send(message);
     }
-
 
     public MimeMessage createConfirmationMessage(Long order_id, String email) throws MessagingException {
         Optional<Order> existingOrder = orderRepository.findById(order_id);
