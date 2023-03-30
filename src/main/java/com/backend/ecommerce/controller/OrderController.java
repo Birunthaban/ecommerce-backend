@@ -1,7 +1,6 @@
 package com.backend.ecommerce.controller;
 
-import com.backend.ecommerce.model.Order;
-import com.backend.ecommerce.model.Product;
+import com.backend.ecommerce.model.*;
 import com.backend.ecommerce.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +16,8 @@ public class OrderController {
         return ResponseEntity.ok().body(orders);
     }
     @PostMapping("/orders")
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order savedOrder = orderService.saveOrder(order);
+    public ResponseEntity<Order> createOrder(@RequestBody User user , @RequestBody Cart cart , @RequestBody Address address) {
+        Order savedOrder = orderService.placeOrder(user,cart,address);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
     }
     @DeleteMapping("/orders/{id}")

@@ -24,7 +24,25 @@ public class Order {
         @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
         private List<OrderItem> orderItems = new ArrayList<>();
 
-        // constructors, getters and setters
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+        private Address address;
+
+    public PaymentMethod getPayment() {
+        return payment;
+    }
+
+    private PaymentMethod payment = PaymentMethod.CASH_ON_DELIVERY ;
+
+
     private Double TotalAmount;
 
     public Double getTotalAmount() {
