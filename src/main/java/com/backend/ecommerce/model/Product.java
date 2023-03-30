@@ -38,7 +38,6 @@ public class Product {
     private Boolean available;
 
 
-
     public String getCategory() {
         return category;
     }
@@ -49,6 +48,7 @@ public class Product {
 
     @Column(nullable = false)
     private String category;
+
     public Long getId() {
         return id;
     }

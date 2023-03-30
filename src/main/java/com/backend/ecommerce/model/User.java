@@ -20,78 +20,79 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
-        public class User implements UserDetails {
+public class User implements UserDetails {
 
-  @Id
-  @GeneratedValue
-  private Integer id;
-  private String firstname;
-  private String lastname;
-  private String email;
-  private String password;
-  @Enumerated(EnumType.STRING)
-  private Role role;
+    @Id
+    @GeneratedValue
+    private Integer id;
+    private String firstname;
+    private String lastname;
+    private String email;
+    private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-  public String getVerificationToken() {
-    return verificationToken;
-  }
+    public String getVerificationToken() {
+        return verificationToken;
+    }
 
-  public void setVerificationToken(String verificationToken) {
-    this.verificationToken = verificationToken;
-  }
-@JsonIgnore
-  @Column(name = "verification_token")
-  private String verificationToken;
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
 
-  public Boolean getStatus() {
-    return status;
-  }
-  private Boolean status;
+    @JsonIgnore
+    @Column(name = "verification_token")
+    private String verificationToken;
 
+    public Boolean getStatus() {
+        return status;
+    }
 
-  public void setStatus(Boolean status) {
-    this.status = status;
-  }
+    private Boolean status;
 
 
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 
-@JsonIgnore
-  @OneToMany(mappedBy = "user")
-  private List<Token> tokens;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
-  }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
 
-  @Override
-  public String getPassword() {
-    return password;
-  }
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-  @Override
-  public String getUsername() {
-    return email;
-  }
+    @Override
+    public String getUsername() {
+        return email;
+    }
 
-  @Override
-  public boolean isAccountNonExpired() {
-    return true;
-  }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-  @Override
-  public boolean isAccountNonLocked() {
-    return true;
-  }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-  @Override
-  public boolean isEnabled() {
-    return true;
-  }
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

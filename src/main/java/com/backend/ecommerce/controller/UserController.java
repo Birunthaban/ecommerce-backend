@@ -1,7 +1,6 @@
 package com.backend.ecommerce.controller;
 
 
-
 import com.backend.ecommerce.service.EmailService;
 import com.backend.ecommerce.model.User;
 import com.backend.ecommerce.service.UserService;
@@ -21,18 +20,17 @@ public class UserController {
     @Autowired
     private EmailService mailService;
 
-   @GetMapping("/all")
-    public List<User> getAllUser(){
-       return  userService.getAllUser();
-   }
+    @GetMapping("/all")
+    public List<User> getAllUser() {
+        return userService.getAllUser();
+    }
 
 
-
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteCustomerById(@PathVariable Integer id) {
-      userService.deleteUserById(id);
-      return ResponseEntity.noContent().build();
-  }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCustomerById(@PathVariable Integer id) {
+        userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 }

@@ -10,8 +10,6 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -42,7 +40,6 @@ public class Cart {
     public void setItems(List<CartItem> items) {
         this.items = items;
     }
-
 
 
 }

@@ -31,6 +31,7 @@ public class EmailService {
     private OrderRepository orderRepository;
     @Value("${app.url}")
     private String appUrl;
+
     public void sendVerificationEmail(String email, String verificationToken) {
         String subject = "Please verify your email address";
         String verificationLink = appUrl + "/verify-email?token=" + verificationToken;
@@ -45,11 +46,9 @@ public class EmailService {
     }
 
 
-
-
-    public MimeMessage createConfirmationMessage(Long order_id,String email) throws MessagingException {
-        Optional<Order> existingOrder=orderRepository.findById(order_id);
-        if(!existingOrder.isPresent()){
+    public MimeMessage createConfirmationMessage(Long order_id, String email) throws MessagingException {
+        Optional<Order> existingOrder = orderRepository.findById(order_id);
+        if (!existingOrder.isPresent()) {
             throw new EntityNotFoundException("Order not found with ID: " + order_id);
         }
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -67,11 +66,11 @@ public class EmailService {
                 + "</tr>"
                 + getProductDetails(order_id)
                 + "</table>"
-                + "</body></html>",true);
+                + "</body></html>", true);
         return message;
     }
 
-    public void sendConfirmationEmail(Long order_id,String email){
+    public void sendConfirmationEmail(Long order_id, String email) {
         try {
             MimeMessage message = createConfirmationMessage(order_id, email);
             javaMailSender.send(message);

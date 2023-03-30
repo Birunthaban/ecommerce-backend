@@ -21,15 +21,14 @@ public class OrderService {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
-    private EmailService emailService ;
+    private EmailService emailService;
     private CartRepository cartRepository;
 
     @Transactional
     public Order placeOrder(User user, Cart cart, Address address) {
 
 
-
-        List<CartItem> cartItems=cart.getItems();
+        List<CartItem> cartItems = cart.getItems();
 
 
         Order order = new Order();
@@ -57,9 +56,11 @@ public class OrderService {
 
         return order;
     }
-    public List<Order> getAllOrders(){
+
+    public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
+
     public void deleteOrderById(Long id) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + id));

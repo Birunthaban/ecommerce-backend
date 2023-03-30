@@ -7,11 +7,12 @@ import com.backend.ecommerce.model.User;
 
 public class CheckoutService {
     private EmailService emailService;
-    private OrderService orderService ;
-    public void processCheckout(User user, Cart cart, Address address) {
-        Order order=orderService.placeOrder(user,cart,address);
+    private OrderService orderService;
 
-        emailService.sendConfirmationEmail(order.getId(),user.getEmail());
+    public void processCheckout(User user, Cart cart, Address address) {
+        Order order = orderService.placeOrder(user, cart, address);
+
+        emailService.sendConfirmationEmail(order.getId(), user.getEmail());
     }
 
 }

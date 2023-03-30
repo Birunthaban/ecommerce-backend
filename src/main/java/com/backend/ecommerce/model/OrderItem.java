@@ -27,9 +27,9 @@ public class OrderItem {
         return orderedProductPrice;
     }
 
-    public void setOrderedProductPrice(Product product ) {
-        double price = product.getPrice()*this.getQuantity();
-        this.orderedProductPrice =price;
+    public void setOrderedProductPrice(Product product) {
+        double price = product.getPrice() * this.getQuantity();
+        this.orderedProductPrice = price;
     }
 // constructors, getters and setters
 

@@ -22,7 +22,6 @@ public class Address {
     private String contactNumber;
 
 
-
     public Long getId() {
         return id;
     }
@@ -70,8 +69,6 @@ public class Address {
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
     }
-
-
 
 
 }

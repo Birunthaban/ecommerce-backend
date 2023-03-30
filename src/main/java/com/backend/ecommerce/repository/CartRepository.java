@@ -14,7 +14,7 @@ import java.util.List;
 @EnableJpaRepositories
 @Repository
 
-public interface CartRepository extends JpaRepository<Cart,Long> {
+public interface CartRepository extends JpaRepository<Cart, Long> {
 
 
 }
