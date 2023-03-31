@@ -22,7 +22,7 @@ public class ProductService {
         return productRepo.findById(id).orElse(null);
     }
 
-    public Product saveProduct(Product product) {
+    public Product saveProduct(Product product ) {
         return productRepo.save(product);
     }
 
@@ -34,8 +34,12 @@ public class ProductService {
         return false;
     }
 
-    public List<Product> searchProducts(String query) {
+    public List<Product> searchProductsByName(String query) {
         return productRepo.findByNameContainingIgnoreCase(query);
     }
+    public List<Product> searchProductsByCategory(String category) {
+        return productRepo.findByCategoryName(category);
+    }
+
 
 }

@@ -90,7 +90,7 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        // check whether user verified or not....
+
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
         if (user.getStatus()==false){

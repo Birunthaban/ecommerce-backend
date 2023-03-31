@@ -18,6 +18,21 @@ public class Product {
     @Column(nullable = false)
     private String description;
 
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
+
+
     public String getDescription() {
         return description;
     }
@@ -37,17 +52,6 @@ public class Product {
     @Column(nullable = false)
     private Boolean available;
 
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    @Column(nullable = false)
-    private String category;
 
     public Long getId() {
         return id;
