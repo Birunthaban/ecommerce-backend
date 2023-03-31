@@ -24,12 +24,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User addUser(User user) {
-
-        String encryptedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encryptedPassword);
-        return userRepository.save(user);
-    }
 
     public void deleteUserById(Integer id) {
         userRepository.deleteById(id);
