@@ -1,5 +1,6 @@
 package com.backend.ecommerce.controller;
 
+import com.backend.ecommerce.exception.ProductNotFoundException;
 import com.backend.ecommerce.model.Product;
 import com.backend.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +50,23 @@ public class ProductController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Product>> searchProducts(@RequestParam String name) {
-        List<Product> productList = productService.searchProductsByName(name);
+        List<Product> productList = null;
+        try {
+            productList = productService.searchProductsByName(name);
+        } catch (ProductNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
+
     @GetMapping("/searchbycategory")
     public ResponseEntity<List<Product>> searchProductsByCategory(@RequestParam String name) {
-        List<Product> productList = productService.searchProductsByCategory(name);
+        List<Product> productList = null;
+        try {
+            productList = productService.searchProductsByCategory(name);
+        } catch (ProductNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 }

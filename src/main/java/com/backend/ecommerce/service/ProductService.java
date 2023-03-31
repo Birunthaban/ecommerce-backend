@@ -1,5 +1,6 @@
 package com.backend.ecommerce.service;
 
+import com.backend.ecommerce.exception.ProductNotFoundException;
 import com.backend.ecommerce.model.Product;
 import com.backend.ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,34 +12,44 @@ import java.util.List;
 public class ProductService {
 
     @Autowired
-    private ProductRepository productRepo;
+    private ProductRepository productRepository;
 
     public List<Product> getAllProducts() {
-        return productRepo.findAll();
+        return productRepository.findAll();
 
     }
 
     public Product getProductById(Long id) {
-        return productRepo.findById(id).orElse(null);
+        return productRepository.findById(id).orElse(null);
     }
 
     public Product saveProduct(Product product ) {
-        return productRepo.save(product);
+        return productRepository.save(product);
     }
 
     public boolean deleteProductById(Long id) {
-        if (productRepo.existsById(id)) {
-            productRepo.deleteById(id);
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
             return true;
         }
         return false;
     }
 
+
     public List<Product> searchProductsByName(String query) {
-        return productRepo.findByNameContainingIgnoreCase(query);
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(query);
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("No products found for this query ");
+        }
+        return products;
     }
-    public List<Product> searchProductsByCategory(String category) {
-        return productRepo.findByCategoryName(category);
+
+    public List<Product> searchProductsByCategory(String categoryName) throws ProductNotFoundException {
+        List<Product> products = productRepository.findByCategoryName(categoryName);
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("No products found for this category");
+        }
+        return products;
     }
 
 
