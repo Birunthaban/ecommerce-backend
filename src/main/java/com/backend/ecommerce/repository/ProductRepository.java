@@ -11,10 +11,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByNameContainingIgnoreCase(String query);
 
-    @Query("SELECT p FROM Product p JOIN p.category c WHERE c.name = :categoryName")
-    List<Product> findByCategoryName(String categoryName);
 
 
-
-
+    List<Product> findByCategoryId(Long categoryId);
 }

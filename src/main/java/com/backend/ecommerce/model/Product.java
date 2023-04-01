@@ -17,6 +17,11 @@ public class Product {
     private Double price;
     @Column(nullable = false)
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+    @Column(nullable = false)
+    private Boolean available;
 
 
     public Category getCategory() {
@@ -27,9 +32,7 @@ public class Product {
         this.category = category;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+
 
 
 
@@ -49,8 +52,7 @@ public class Product {
         this.available = available;
     }
 
-    @Column(nullable = false)
-    private Boolean available;
+
 
 
     public Long getId() {

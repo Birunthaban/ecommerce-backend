@@ -33,8 +33,8 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Product> addProduct(@RequestParam Product product) {
-        productService.saveProduct(product);
+    public ResponseEntity<Product> addProduct(@RequestBody Product product , @RequestParam long id) {
+        productService.addProduct(product,id);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
@@ -60,13 +60,11 @@ public class ProductController {
     }
 
     @GetMapping("/search_by_category")
-    public ResponseEntity<List<Product>> searchProductsByCategory(@RequestParam String name) {
+    public ResponseEntity<List<Product>> searchProductsByCategory(@RequestParam long id) {
         List<Product> productList = null;
-        try {
-            productList = productService.searchProductsByCategory(name);
-        } catch (ProductNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+
+            productList = productService.searchProductsByCategoryId(id);
+
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 }

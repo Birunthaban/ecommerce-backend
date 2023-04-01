@@ -1,7 +1,9 @@
 package com.backend.ecommerce.service;
 
 import com.backend.ecommerce.exception.ProductNotFoundException;
+import com.backend.ecommerce.model.Category;
 import com.backend.ecommerce.model.Product;
+import com.backend.ecommerce.repository.CategoryRepository;
 import com.backend.ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,8 @@ import java.util.List;
 
 @Service
 public class ProductService {
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -23,7 +27,12 @@ public class ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
-    public Product saveProduct(Product product ) {
+    public Product addProduct(Product product, Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        if (category == null) {
+            throw new IllegalArgumentException("Invalid category id: " + categoryId);
+        }
+        product.setCategory(category);
         return productRepository.save(product);
     }
 
@@ -44,13 +53,8 @@ public class ProductService {
         return products;
     }
 
-    public List<Product> searchProductsByCategory(String categoryName) throws ProductNotFoundException {
-        List<Product> products = productRepository.findByCategoryName(categoryName);
-        if (products.isEmpty()) {
-            throw new ProductNotFoundException("No products found for this category");
-        }
-        return products;
+    public List<Product> searchProductsByCategoryId(Long categoryId) {
+        return productRepository.findByCategoryId(categoryId);
     }
-
 
 }
