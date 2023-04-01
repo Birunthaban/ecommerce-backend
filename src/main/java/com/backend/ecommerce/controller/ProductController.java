@@ -23,8 +23,8 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    @GetMapping("/get")
+    public ResponseEntity<Product> getProductById(@RequestParam Long id) {
         Product product = productService.getProductById(id);
         if (product == null) {
             return ResponseEntity.notFound().build();
@@ -32,15 +32,15 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    @PostMapping
-    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
+    @PostMapping("/add")
+    public ResponseEntity<Product> addProduct(@RequestParam Product product) {
         productService.saveProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteProduct(@RequestParam Long id) {
         boolean deleted = productService.deleteProductById(id);
         if (!deleted) {
             return ResponseEntity.notFound().build();
@@ -59,7 +59,7 @@ public class ProductController {
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
-    @GetMapping("/searchbycategory")
+    @GetMapping("/search_by_category")
     public ResponseEntity<List<Product>> searchProductsByCategory(@RequestParam String name) {
         List<Product> productList = null;
         try {
