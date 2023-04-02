@@ -1,6 +1,8 @@
 package com.backend.ecommerce.service;
 
 import com.backend.ecommerce.exception.CartNotFoundException;
+import com.backend.ecommerce.exception.IdNotFoundException;
+import com.backend.ecommerce.exception.ProductNotFoundException;
 import com.backend.ecommerce.exception.UserNotFoundException;
 import com.backend.ecommerce.model.Cart;
 import com.backend.ecommerce.model.CartItem;
@@ -71,7 +73,7 @@ public class CartService {
                 return "Item added to cart";
             }
         } else {
-            return "Invalid cart or product ID";
+             throw new IdNotFoundException("Invalid Product or Cart ID");
         }
     }
 
