@@ -16,7 +16,8 @@ public class Cart {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 @JsonIgnore
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+
     private List<CartItem> items;
 
     public Long getId() {

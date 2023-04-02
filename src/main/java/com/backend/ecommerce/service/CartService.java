@@ -80,7 +80,7 @@ public class CartService {
              throw new IdNotFoundException("Invalid Product or Cart ID");
         }
     }
-
+@Transactional
     public void removeCartItem(Long cartId, Long cartItemId) {
         try {
             Optional<Cart> savedCart = cartRepository.findById(cartId);
@@ -88,6 +88,7 @@ public class CartService {
             if (savedCart.isPresent() && savedCartItem.isPresent()) {
                 List<CartItem> cartItems = savedCart.get().getItems();
                 cartItems.remove(savedCartItem.get());
+
                 cartRepository.save(savedCart.get());
             }
         } catch (Exception exception) {
