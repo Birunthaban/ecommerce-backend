@@ -16,7 +16,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/cart")
 public class CartController {
-
+    @Autowired
     private final CartService cartService;
 
     public CartController(CartService cartService) {
@@ -29,17 +29,17 @@ public class CartController {
         return ResponseEntity.ok(cart);
     }
 
-    @GetMapping("/{cartId}")
-    public ResponseEntity<Cart> getCartById(@PathVariable Long cartId) {
-        Cart cart = cartService.getCartById(cartId);
+    @GetMapping("/get")
+    public ResponseEntity<Cart> getCartById(@RequestParam Long id) {
+        Cart cart = cartService.getCartById(id);
         if (cart == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(cart);
     }
 
-    @GetMapping("/{cartId}/items")
-    public ResponseEntity<List<CartItem>> getCartItems(@PathVariable Long cartId) {
+    @GetMapping("/get/items")
+    public ResponseEntity<List<CartItem>> getCartItems(@RequestParam Long cartId) {
         Cart cart = cartService.getCartById(cartId);
         if (cart == null) {
             return ResponseEntity.notFound().build();
@@ -48,14 +48,14 @@ public class CartController {
         return ResponseEntity.ok(cartItems);
     }
 
-    @PostMapping("/{cartId}/add-item")
-    public ResponseEntity<String> addCartItem(@PathVariable Long cartId, @RequestParam int user_id, @RequestBody Product product, @RequestParam int quantity) {
-        cartService.addCartItem(cartId, user_id, product, quantity);
+    @PostMapping("/add/items")
+    public ResponseEntity<String> addCartItem(@RequestParam Long id, @RequestBody Product product, @RequestParam int quantity) {
+        cartService.addCartItem(id, product, quantity);
         return ResponseEntity.ok("Item added to cart");
     }
 
-    @DeleteMapping("/{cartId}/items/{itemId}")
-    public ResponseEntity<?> removeCartItem(@PathVariable Long cartId, @PathVariable Long itemId) {
+    @DeleteMapping("/remove/items")
+    public ResponseEntity<?> removeCartItem(@RequestParam Long cartId, @RequestParam Long itemId) {
         Cart cart = cartService.getCartById(cartId);
         if (cart == null) {
             return ResponseEntity.notFound().build();
@@ -68,9 +68,9 @@ public class CartController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{cartId}")
-    public ResponseEntity<?> clearCart(@PathVariable Long cartId) {
-        Cart cart = cartService.getCartById(cartId);
+    @DeleteMapping("/clear")
+    public ResponseEntity<?> clearCart(@RequestParam Long id) {
+        Cart cart = cartService.getCartById(id);
         if (cart == null) {
             return ResponseEntity.notFound().build();
         }

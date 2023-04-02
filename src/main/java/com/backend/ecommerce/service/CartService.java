@@ -18,6 +18,7 @@ import java.util.Optional;
 public class CartService {
     @Autowired
     private final CartRepository cartRepository;
+    @Autowired
     private final UserRepository userRepository;
 
     public CartService(CartRepository cartRepository, UserRepository userRepository) {
@@ -40,26 +41,37 @@ public class CartService {
         return cart.getItems();
     }
 
-    public void addCartItem(long cartId, int userId, Product product, int quantity) {
-        Cart actualCart = cartRepository.findById(cartId)
-                .orElseGet(() -> createCart(userId));
-        List<CartItem> cartItems = actualCart.getItems();
-        boolean isItemFound = false;
-        for (CartItem item : cartItems) {
-            if (item.getProduct().getId().equals(product.getId())) {
-                item.setQuantity(item.getQuantity() + quantity);
-                isItemFound = true;
-                break;
+    public String addCartItem(long cart_id, Product product, int quantity) {
+        // Find cart by ID
+        Optional<Cart> existingCart = cartRepository.findById(cart_id);
+
+        if (existingCart.isPresent()) {
+            // If cart exists, get its cart items
+            Cart cart = existingCart.get();
+            List<CartItem> cartItems = cart.getItems();
+
+            // Check if item already exists in cart
+            for (CartItem item : cartItems) {
+                if (item.getProduct().getId().equals(product.getId())) {
+                    // If item exists, update its quantity and save cart
+                    item.setQuantity(item.getQuantity() + quantity);
+                    cartRepository.save(cart);
+                    return "Item quantity updated";
+                }
             }
-        }
-        if (!isItemFound) {
+
+            // If item doesn't exist, create a new cart item and add it to the cart
             CartItem newItem = new CartItem();
             newItem.setProduct(product);
             newItem.setQuantity(quantity);
-            newItem.setCart(actualCart);
+            newItem.setCart(cart);
             cartItems.add(newItem);
+            cartRepository.save(cart);
+            return "Item added to cart";
+        } else {
+            // If cart does not exist, return an error message
+            return "Invalid cart ID";
         }
-        cartRepository.save(actualCart);
     }
 
     public void removeCartItem(Cart cart, CartItem cartItem) {
@@ -72,6 +84,9 @@ public class CartService {
         cart.getItems().clear();
         cartRepository.save(cart);
     }
-
+    public Cart createOrGetCart(int userId) {
+        return cartRepository.findByUserId(userId)
+                .orElseGet(() -> createCart(userId));
+    }
 
 }

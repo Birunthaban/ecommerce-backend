@@ -26,12 +26,21 @@ import java.util.UUID;
 public class AuthenticationService {
     @Autowired
     private final UserRepository repository;
+    @Autowired
     private final TokenRepository tokenRepository;
+    @Autowired
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+
     private final JwtService jwtService;
+    @Autowired
     private final AuthenticationManager authenticationManager;
+    @Autowired
 
     private final EmailService emailService;
+    @Autowired
+    private final CartService cartService;
+
 
 
     public String registerUser(RegisterRequest request) {
@@ -96,12 +105,15 @@ public class AuthenticationService {
         if (user.getStatus()==false){
             throw new UserNotVerifiedException("User Didn't verify");
         }
+        cartService.createOrGetCart(user.getId());
         var jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+
     }
 
     private void saveUserToken(User user, String jwtToken) {

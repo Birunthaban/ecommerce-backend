@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @EnableJpaRepositories
 @Repository
@@ -17,4 +18,5 @@ import java.util.List;
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
 
+    Optional<Cart> findByUserId(int userId);
 }
