@@ -7,6 +7,7 @@ import com.backend.ecommerce.model.CartItem;
 import com.backend.ecommerce.model.Product;
 import com.backend.ecommerce.model.User;
 import com.backend.ecommerce.repository.CartRepository;
+import com.backend.ecommerce.repository.ProductRepository;
 import com.backend.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,8 @@ public class CartService {
     private final CartRepository cartRepository;
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public CartService(CartRepository cartRepository, UserRepository userRepository) {
         this.cartRepository = cartRepository;
@@ -41,36 +44,34 @@ public class CartService {
         return cart.getItems();
     }
 
-    public String addCartItem(long cart_id, Product product, int quantity) {
-        // Find cart by ID
-        Optional<Cart> existingCart = cartRepository.findById(cart_id);
+    public String addCartItem(long cartId, Long productId, int quantity) {
+        Optional<Cart> optionalCart = cartRepository.findById(cartId);
+        Optional<Product> optionalProduct = productRepository.findById(productId);
 
-        if (existingCart.isPresent()) {
-            // If cart exists, get its cart items
-            Cart cart = existingCart.get();
+        if (optionalCart.isPresent() && optionalProduct.isPresent()) {
+            Cart cart = optionalCart.get();
             List<CartItem> cartItems = cart.getItems();
 
-            // Check if item already exists in cart
-            for (CartItem item : cartItems) {
-                if (item.getProduct().getId().equals(product.getId())) {
-                    // If item exists, update its quantity and save cart
-                    item.setQuantity(item.getQuantity() + quantity);
-                    cartRepository.save(cart);
-                    return "Item quantity updated";
-                }
-            }
+            Optional<CartItem> optionalCartItem = cartItems.stream()
+                    .filter(item -> item.getProduct().getId().equals(productId))
+                    .findFirst();
 
-            // If item doesn't exist, create a new cart item and add it to the cart
-            CartItem newItem = new CartItem();
-            newItem.setProduct(product);
-            newItem.setQuantity(quantity);
-            newItem.setCart(cart);
-            cartItems.add(newItem);
-            cartRepository.save(cart);
-            return "Item added to cart";
+            if (optionalCartItem.isPresent()) {
+                CartItem cartItem = optionalCartItem.get();
+                cartItem.setQuantity(cartItem.getQuantity() + quantity);
+                cartRepository.save(cart);
+                return "Item quantity updated";
+            } else {
+                CartItem newCartItem = new CartItem();
+                newCartItem.setProduct(optionalProduct.get());
+                newCartItem.setQuantity(quantity);
+                newCartItem.setCart(cart);
+                cartItems.add(newCartItem);
+                cartRepository.save(cart);
+                return "Item added to cart";
+            }
         } else {
-            // If cart does not exist, return an error message
-            return "Invalid cart ID";
+            return "Invalid cart or product ID";
         }
     }
 
