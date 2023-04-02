@@ -1,19 +1,19 @@
 package com.backend.ecommerce.service;
 
-import com.backend.ecommerce.exception.CartNotFoundException;
-import com.backend.ecommerce.exception.IdNotFoundException;
-import com.backend.ecommerce.exception.ProductNotFoundException;
-import com.backend.ecommerce.exception.UserNotFoundException;
+import com.backend.ecommerce.exception.*;
 import com.backend.ecommerce.model.Cart;
 import com.backend.ecommerce.model.CartItem;
 import com.backend.ecommerce.model.Product;
 import com.backend.ecommerce.model.User;
+import com.backend.ecommerce.repository.CartItemRepository;
 import com.backend.ecommerce.repository.CartRepository;
 import com.backend.ecommerce.repository.ProductRepository;
 import com.backend.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +25,10 @@ public class CartService {
     private final UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CartItemRepository cartItemRepository;
+    @Autowired
+    private EntityManager entityManager;
 
     public CartService(CartRepository cartRepository, UserRepository userRepository) {
         this.cartRepository = cartRepository;
@@ -77,17 +81,33 @@ public class CartService {
         }
     }
 
-    public void removeCartItem(Cart cart, CartItem cartItem) {
-        List<CartItem> cartItems = cart.getItems();
-        cartItems.remove(cartItem);
-        cartRepository.save(cart);
+    public void removeCartItem(Long cartId, Long cartItemId) {
+        try {
+            Optional<Cart> savedCart = cartRepository.findById(cartId);
+            Optional<CartItem> savedCartItem = cartItemRepository.findById(cartItemId);
+            if (savedCart.isPresent() && savedCartItem.isPresent()) {
+                List<CartItem> cartItems = savedCart.get().getItems();
+                cartItems.remove(savedCartItem.get());
+                cartRepository.save(savedCart.get());
+            }
+        } catch (Exception exception) {
+
+            throw new RuntimeException("cart item or cart not found");
+        }
+    }
+@Transactional
+    public void clearCart(Long cartId) {
+        Optional<Cart> optionalCart = cartRepository.findById(cartId);
+        if (optionalCart.isPresent()) {
+            Cart cart = optionalCart.get();
+            List<CartItem> cartItems = cart.getItems();
+            cartItems.clear();
+            entityManager.detach(cart);
+            cartRepository.save(cart);
+        }
     }
 
-    public void clearCart(Cart cart) {
-        cart.getItems().clear();
-        cartRepository.save(cart);
-    }
-    public Cart createOrGetCart(int userId) {
+    public Cart getCart(int userId) {
         return cartRepository.findByUserId(userId)
                 .orElseGet(() -> createCart(userId));
     }

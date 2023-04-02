@@ -56,15 +56,7 @@ public class CartController {
 
     @DeleteMapping("/remove/items")
     public ResponseEntity<?> removeCartItem(@RequestParam Long cartId, @RequestParam Long itemId) {
-        Cart cart = cartService.getCartById(cartId);
-        if (cart == null) {
-            return ResponseEntity.notFound().build();
-        }
-        Optional<CartItem> cartItem = cart.getItems().stream().filter(item -> item.getId().equals(itemId)).findFirst();
-        if (cartItem.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        cartService.removeCartItem(cart, cartItem.get());
+        cartService.removeCartItem(cartId,itemId);
         return ResponseEntity.ok().build();
     }
 
@@ -74,7 +66,7 @@ public class CartController {
         if (cart == null) {
             return ResponseEntity.notFound().build();
         }
-        cartService.clearCart(cart);
+        cartService.clearCart(id);
         return ResponseEntity.ok().build();
     }
 }

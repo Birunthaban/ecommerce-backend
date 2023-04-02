@@ -105,7 +105,7 @@ public class AuthenticationService {
         if (user.getStatus()==false){
             throw new UserNotVerifiedException("User Didn't verify");
         }
-        cartService.createOrGetCart(user.getId());
+        cartService.getCart(user.getId());
         var jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
