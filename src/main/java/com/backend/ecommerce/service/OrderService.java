@@ -67,7 +67,8 @@ public class OrderService {
         orderRepository.save(order);
 
         // Remove cart items and update the cart
-        cart.setItems(new ArrayList<>());
+
+        cart.clearItems();
         cartRepository.save(cart);
 
         return order;

@@ -33,9 +33,11 @@ public class Order {
     @Column(name = "total_amount", nullable = false)
     private double totalAmount;
 
+
     public Long getId() {
         return id;
     }
+
 
     public void setId(Long id) {
         this.id = id;
