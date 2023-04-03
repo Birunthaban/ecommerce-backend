@@ -1,9 +1,8 @@
 package com.backend.ecommerce.service;
 
+import com.backend.ecommerce.exception.UserNotFoundException;
 import com.backend.ecommerce.model.*;
-import com.backend.ecommerce.repository.CartRepository;
-import com.backend.ecommerce.repository.OrderItemRepository;
-import com.backend.ecommerce.repository.OrderRepository;
+import com.backend.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +11,9 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class OrderService {
@@ -25,19 +27,28 @@ public class OrderService {
     private EmailService emailService;
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Transactional
-    public Order placeOrder(User user, Cart cart, Address address) {
+    public Order placeOrder(Long cartId, Address address) {
+        Optional<Cart> optionalCart = cartRepository.findById(cartId);
+        if (!optionalCart.isPresent()) {
+            throw new RuntimeException("Cart Not Found");
+        }
 
-
+        Cart cart = optionalCart.get();
         List<CartItem> cartItems = cart.getItems();
 
+        Address savedAddress = addressRepository.save(address);
 
         Order order = new Order();
         order.setUser(cart.getUser());
         order.setOrderDate(LocalDate.now());
+        order.setAddress(savedAddress);
         orderRepository.save(order);
-
 
         List<OrderItem> orderItems = new ArrayList<>();
         for (CartItem cartItem : cartItems) {
@@ -45,29 +56,48 @@ public class OrderService {
             orderItem.setProduct(cartItem.getProduct());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setOrder(order);
-            orderItem.setOrderedProductPrice(cartItem.getProduct());
+            orderItem.setOrderedProductPrice(orderItem.getProduct());
             orderItemRepository.save(orderItem);
             orderItems.add(orderItem);
         }
 
         order.setOrderItems(orderItems);
-        order.setTotalAmount();
+        order.setTotalAmount(); // calculate the total amount
         orderRepository.save(order);
-        cart.getItems().removeAll(cartItems);
+
+        cartItems.clear(); // remove all cart items
         cartRepository.save(cart);
 
         return order;
     }
 
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<Order> getAllOrders () {
+            return orderRepository.findAll();
+        }
+
+        public void deleteOrderById (Long id){
+            Order order = orderRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + id));
+
+            orderItemRepository.deleteAll(order.getOrderItems());
+            orderRepository.delete(order);
+        }
+        public void processCheckout(Integer userId, Long cartId, Address address) {
+        Order order = this.placeOrder(cartId, address);
+
+        Optional<User> savedUser = userRepository.findById(userId);
+
+        if(savedUser.isPresent()){
+            emailService.sendConfirmationEmail(order.getId(), savedUser.get().getEmail());
+        }
+        else{
+            throw new UserNotFoundException("No Valid User");
+        }
+
+
+
     }
 
-    public void deleteOrderById(Long id) {
-        Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + id));
-
-        orderItemRepository.deleteAll(order.getOrderItems());
-        orderRepository.delete(order);
-    }
 }
+
+

@@ -2,6 +2,7 @@ package com.backend.ecommerce.controller;
 
 import com.backend.ecommerce.model.*;
 import com.backend.ecommerce.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 public class OrderController {
+    @Autowired
     private OrderService orderService;
 
     @GetMapping("/orders")
@@ -18,10 +20,10 @@ public class OrderController {
         return ResponseEntity.ok().body(orders);
     }
 
-    @PostMapping("/orders")
-    public ResponseEntity<Order> createOrder(@RequestBody User user, @RequestBody Cart cart, @RequestBody Address address) {
-        Order savedOrder = orderService.placeOrder(user, cart, address);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
+    @PostMapping("/checkout")
+    public ResponseEntity<String> processCheckout(@RequestParam Integer userId,@RequestParam Long cartId, @RequestBody Address address) {
+        orderService.processCheckout(userId,cartId, address);
+     return ResponseEntity.ok("checkout sucessful");
     }
 
     @DeleteMapping("/orders/{id}")

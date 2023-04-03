@@ -50,11 +50,14 @@ public class Order {
     }
 
     public void setTotalAmount() {
-        Double totalAmount = (double) 0;
+        Double totalAmount = 0.0;
         for (OrderItem item : this.orderItems) {
             totalAmount += item.getOrderedProductPrice();
         }
+        System.out.println(this.TotalAmount);
         this.TotalAmount = totalAmount;
+        System.out.println(this.TotalAmount);
+
     }
 
     public Long getId() {

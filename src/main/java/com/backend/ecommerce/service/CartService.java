@@ -27,8 +27,6 @@ public class CartService {
     private ProductRepository productRepository;
     @Autowired
     private CartItemRepository cartItemRepository;
-    @Autowired
-    private EntityManager entityManager;
 
     public CartService(CartRepository cartRepository, UserRepository userRepository) {
         this.cartRepository = cartRepository;

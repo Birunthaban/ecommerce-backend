@@ -13,10 +13,6 @@ public class CheckoutService {
     private EmailService emailService;
     private OrderService orderService;
 
-    public void processCheckout(User user, Cart cart, Address address) {
-        Order order = orderService.placeOrder(user, cart, address);
 
-        emailService.sendConfirmationEmail(order.getId(), user.getEmail());
-    }
 
 }
