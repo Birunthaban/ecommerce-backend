@@ -20,7 +20,6 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
-
     @Autowired
     private OrderItemRepository orderItemRepository;
     @Autowired
@@ -47,6 +46,7 @@ public class OrderService {
         Order order = new Order();
         order.setUser(cart.getUser());
         order.setOrderDate(LocalDate.now());
+        order.setPayment(PaymentMethod.CASH_ON_DELIVERY);
         order.setAddress(savedAddress);
         orderRepository.save(order);
 
@@ -62,10 +62,12 @@ public class OrderService {
         }
 
         order.setOrderItems(orderItems);
-        order.setTotalAmount(); // calculate the total amount
+        order.setTotalAmount(order.calculateTotalAmount());
+
         orderRepository.save(order);
 
-        cartItems.clear(); // remove all cart items
+        // Remove cart items and update the cart
+        cart.setItems(new ArrayList<>());
         cartRepository.save(cart);
 
         return order;

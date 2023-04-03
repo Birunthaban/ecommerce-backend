@@ -9,7 +9,6 @@ import java.util.List;
 @Table(name = "orders")
 public class Order {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,47 +17,21 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "order_date", nullable = false)
-    private LocalDate orderDate;
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod payment;
 
     @ManyToOne
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    public PaymentMethod getPayment() {
-        return payment;
-    }
+    @Column(name = "order_date", nullable = false)
+    private LocalDate orderDate;
 
-    private PaymentMethod payment = PaymentMethod.CASH_ON_DELIVERY;
-
-
-    private Double TotalAmount;
-
-    public Double getTotalAmount() {
-        return TotalAmount;
-    }
-
-    public void setTotalAmount() {
-        Double totalAmount = 0.0;
-        for (OrderItem item : this.orderItems) {
-            totalAmount += item.getOrderedProductPrice();
-        }
-        System.out.println(this.TotalAmount);
-        this.TotalAmount = totalAmount;
-        System.out.println(this.TotalAmount);
-
-    }
+    @Column(name = "total_amount", nullable = false)
+    private double totalAmount;
 
     public Long getId() {
         return id;
@@ -76,6 +49,34 @@ public class Order {
         this.user = user;
     }
 
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems.clear();
+        if (orderItems != null) {
+            this.orderItems.addAll(orderItems);
+            orderItems.forEach(orderItem -> orderItem.setOrder(this));
+        }
+    }
+
+    public PaymentMethod getPayment() {
+        return payment;
+    }
+
+    public void setPayment(PaymentMethod payment) {
+        this.payment = payment;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public LocalDate getOrderDate() {
         return orderDate;
     }
@@ -84,14 +85,19 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
+    public double getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public double calculateTotalAmount() {
+        double totalAmount = 0.0;
+        for (OrderItem orderItem : orderItems) {
+            totalAmount += orderItem.getOrderedProductPrice();
+        }
+        return totalAmount;
     }
 }
-
-
-
