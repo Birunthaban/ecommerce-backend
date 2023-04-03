@@ -91,6 +91,9 @@ public class CartService {
 
                 cartRepository.save(savedCart.get());
             }
+            else{
+                throw new CartItemNotFoundException("cart item or cart not found");
+            }
         } catch (Exception exception) {
 
             throw new RuntimeException("cart item or cart not found");
@@ -103,7 +106,6 @@ public class CartService {
             Cart cart = optionalCart.get();
             List<CartItem> cartItems = cart.getItems();
             cartItems.clear();
-            entityManager.detach(cart);
             cartRepository.save(cart);
         }
     }
