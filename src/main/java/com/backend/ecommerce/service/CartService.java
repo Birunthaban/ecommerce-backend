@@ -1,6 +1,5 @@
 package com.backend.ecommerce.service;
 
-import com.backend.ecommerce.exception.*;
 import com.backend.ecommerce.model.Cart;
 import com.backend.ecommerce.model.CartItem;
 import com.backend.ecommerce.model.Product;

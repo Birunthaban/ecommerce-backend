@@ -14,7 +14,6 @@ import java.util.List;
 public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
-
     @Autowired
     private ProductRepository productRepository;
 
@@ -22,38 +21,25 @@ public class ProductService {
         return productRepository.findAll();
 
     }
-
-    public Product getProductById(Long id) {
-        return productRepository.findById(id).orElse(null);
+    public Product getProduct(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid product id: " + id));
     }
-
     public Product addProduct(Product product, Long categoryId) {
-        Category category = categoryRepository.findById(categoryId).orElse(null);
-        if (category == null) {
-            throw new IllegalArgumentException("Invalid category id: " + categoryId);
-        }
-        product.setCategory(category);
-        return productRepository.save(product);
+        return categoryRepository.findById(categoryId)
+                .map(category -> {
+                    product.setCategory(category);
+                    return productRepository.save(product);
+                })
+                .orElseThrow(() -> new IllegalArgumentException("Invalid category id: " + categoryId));
     }
-
-    public boolean deleteProductById(Long id) {
-        if (productRepository.existsById(id)) {
-            productRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
     }
-
-
     public List<Product> searchProductsByName(String query) {
-        List<Product> products = productRepository.findByNameContainingIgnoreCase(query);
-        if (products.isEmpty()) {
-            throw new RuntimeException("No products found for this query ");
-        }
-        return products;
+        return productRepository.findByNameContainingIgnoreCase(query);
     }
-
-    public List<Product> searchProductsByCategoryId(Long categoryId) {
+    public List<Product> searchProductsByCategory(Long categoryId) {
         return productRepository.findByCategoryId(categoryId);
     }
 
