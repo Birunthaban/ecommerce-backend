@@ -24,7 +24,7 @@ public class OrderController {
     @PostMapping("/checkout")
     public ResponseEntity<String> processCheckout(@RequestParam Integer userId,@RequestParam Long cartId, @RequestBody Address address) {
         orderService.checkout(userId,cartId, address);
-     return ResponseEntity.ok("checkout sucessful");
+     return ResponseEntity.ok("checkout successful");
     }
 
     @DeleteMapping("/orders/{id}")
