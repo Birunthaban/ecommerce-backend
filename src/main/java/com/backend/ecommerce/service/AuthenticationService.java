@@ -25,7 +25,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthenticationService {
     @Autowired
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     @Autowired
     private final TokenRepository tokenRepository;
     @Autowired
@@ -44,9 +44,9 @@ public class AuthenticationService {
 
 
     public String registerUser(RegisterRequest request) {
-        boolean userExists = repository.existsByEmail(request.getEmail());
+        boolean userExists = userRepository.existsByEmail(request.getEmail());
 
-        if (repository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new UserAlreadyExistsException("User with this email already exists.");
         }
         String verificationToken = UUID.randomUUID().toString();
@@ -60,16 +60,16 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
-        var savedUser = repository.save(user);
+        var savedUser = userRepository.save(user);
         emailService.sendVerificationEmail(user.getEmail(), verificationToken);
         return "Verify you email" ;
     }
 
 
     public AuthenticationResponse registerAdmin(RegisterRequest request) {
-        boolean userExists = repository.existsByEmail(request.getEmail());
+        boolean userExists = userRepository.existsByEmail(request.getEmail());
 
-        if (repository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new UserAlreadyExistsException("User with this email already exists.");
         }
         String verificationToken = UUID.randomUUID().toString();
@@ -83,7 +83,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ADMIN)
                 .build();
-        var savedUser = repository.save(user);
+        var savedUser = userRepository.save(user);
         emailService.sendVerificationEmail(user.getEmail(), verificationToken);
         var jwtToken = jwtService.generateToken(user);
         saveUserToken(savedUser, jwtToken);
@@ -100,7 +100,7 @@ public class AuthenticationService {
                 )
         );
 
-        var user = repository.findByEmail(request.getEmail())
+        var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         if (user.getStatus()==false){
             throw new UserNotVerifiedException("User Didn't verify");
