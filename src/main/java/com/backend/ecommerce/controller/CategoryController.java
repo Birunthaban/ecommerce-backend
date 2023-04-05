@@ -29,10 +29,7 @@ public class CategoryController {
     }
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteProduct(@RequestParam Long categoryId) {
-        boolean deleted = categoryService.deleteCategoryById(categoryId);
-        if (!deleted) {
-            return ResponseEntity.notFound().build();
-        }
+        categoryService.deleteCategoryById(categoryId);
         return ResponseEntity.noContent().build();
     }
 

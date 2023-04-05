@@ -12,6 +12,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
     public List<Category> getAllProductsCategories() {
+
         return categoryRepository.findAll();
     }
 
@@ -20,11 +21,9 @@ public class CategoryService {
 
     }
 
-    public boolean deleteCategoryById(Long categoryId) {
-        if (categoryRepository.existsById(categoryId)) {
+    public void deleteCategoryById(Long categoryId) {
+
             categoryRepository.deleteById(categoryId);
-            return true;
-        }
-        return false;
+
     }
 }

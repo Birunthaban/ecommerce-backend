@@ -69,12 +69,16 @@ public class EmailService {
         return message;
     }
 
-    public void sendConfirmationEmail(Long order_id, String email) {
+    public void sendConfirmationEmail(Long orderId, String email) {
         try {
-            MimeMessage message = createConfirmationMessage(order_id, email);
+            // Create the email message
+            MimeMessage message = createConfirmationMessage(orderId, email);
+
+            // Send the email
             javaMailSender.send(message);
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            // If an exception occurs, wrap it in a runtime exception and re-throw it
+            throw new RuntimeException("Failed to send confirmation email", e);
         }
     }
 

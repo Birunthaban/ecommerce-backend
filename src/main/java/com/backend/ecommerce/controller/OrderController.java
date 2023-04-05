@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/orders")
 public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/orders")
+    @GetMapping("/all")
     public ResponseEntity<List<Order>> getAllOrders() {
         List<Order> orders = orderService.getAllOrders();
         return ResponseEntity.ok().body(orders);
@@ -22,7 +23,7 @@ public class OrderController {
 
     @PostMapping("/checkout")
     public ResponseEntity<String> processCheckout(@RequestParam Integer userId,@RequestParam Long cartId, @RequestBody Address address) {
-        orderService.processCheckout(userId,cartId, address);
+        orderService.checkout(userId,cartId, address);
      return ResponseEntity.ok("checkout sucessful");
     }
 
