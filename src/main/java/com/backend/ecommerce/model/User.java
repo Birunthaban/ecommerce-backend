@@ -29,13 +29,13 @@ public class User implements UserDetails {
     private String lastname;
     @Column
     private String email;
+    @JsonIgnore
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
     @JsonIgnore
-
     private String link;
-
+@JsonIgnore
     public String getVerificationToken() {
         return link;
     }
@@ -49,7 +49,7 @@ public class User implements UserDetails {
     public Boolean getStatus() {
         return status;
     }
-
+    @JsonIgnore
     private Boolean status;
 
 
@@ -62,37 +62,37 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
-
+@JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
-
+@JsonIgnore
     @Override
     public String getPassword() {
         return password;
     }
-
+    @JsonIgnore
     @Override
     public String getUsername() {
         return email;
     }
-
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;

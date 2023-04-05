@@ -1,6 +1,7 @@
 package com.backend.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,7 +16,7 @@ public class Cart {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-@JsonIgnore
+@JsonManagedReference
 @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 
     private List<CartItem> items;
