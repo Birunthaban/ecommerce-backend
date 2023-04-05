@@ -1,6 +1,6 @@
 package com.backend.ecommerce.service;
 
-import com.backend.ecommerce.exception.UserNotFoundException;
+
 import com.backend.ecommerce.model.*;
 import com.backend.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +94,7 @@ public class OrderService {
             emailService.sendConfirmationEmail(order.getId(), savedUser.get().getEmail());
         }
         else{
-            throw new UserNotFoundException("No Valid User");
+            throw new RuntimeException("No Valid User");
         }
 
 

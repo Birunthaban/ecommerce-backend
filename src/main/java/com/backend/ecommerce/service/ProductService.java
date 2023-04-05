@@ -1,6 +1,6 @@
 package com.backend.ecommerce.service;
 
-import com.backend.ecommerce.exception.ProductNotFoundException;
+
 import com.backend.ecommerce.model.Category;
 import com.backend.ecommerce.model.Product;
 import com.backend.ecommerce.repository.CategoryRepository;
@@ -48,7 +48,7 @@ public class ProductService {
     public List<Product> searchProductsByName(String query) {
         List<Product> products = productRepository.findByNameContainingIgnoreCase(query);
         if (products.isEmpty()) {
-            throw new ProductNotFoundException("No products found for this query ");
+            throw new RuntimeException("No products found for this query ");
         }
         return products;
     }

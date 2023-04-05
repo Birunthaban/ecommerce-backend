@@ -1,6 +1,6 @@
 package com.backend.ecommerce.controller;
 
-import com.backend.ecommerce.exception.ProductNotFoundException;
+
 import com.backend.ecommerce.model.Product;
 import com.backend.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ public class ProductController {
         List<Product> productList = null;
         try {
             productList = productService.searchProductsByName(name);
-        } catch (ProductNotFoundException e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
         return new ResponseEntity<>(productList, HttpStatus.OK);

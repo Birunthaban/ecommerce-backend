@@ -36,12 +36,12 @@ public class CartService {
     public Cart createCart(Integer userId) {
         Optional<User> existingUser = userRepository.findById(userId);
         Cart cart = new Cart();
-        cart.setUser(existingUser.orElseThrow(() -> new UserNotFoundException("User not found")));
+        cart.setUser(existingUser.orElseThrow(() -> new RuntimeException("User not found")));
         return cartRepository.save(cart);
     }
 
     public Cart getCartById(Long cartId) {
-        return cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException("Cart not found"));
+        return cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("Cart not found"));
     }
 
     public List<CartItem> getCartItems(Cart cart) {
@@ -75,7 +75,7 @@ public class CartService {
                 return "Item added to cart";
             }
         } else {
-             throw new IdNotFoundException("Invalid Product or Cart ID");
+             throw new RuntimeException("Invalid Product or Cart ID");
         }
     }
 @Transactional
@@ -89,9 +89,7 @@ public class CartService {
 
                 cartRepository.save(savedCart.get());
             }
-            else{
-                throw new CartItemNotFoundException("cart item or cart not found");
-            }
+
         } catch (Exception exception) {
 
             throw new RuntimeException("cart item or cart not found");

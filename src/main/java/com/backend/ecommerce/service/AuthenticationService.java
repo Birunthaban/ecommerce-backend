@@ -4,8 +4,6 @@ package com.backend.ecommerce.service;
 import com.backend.ecommerce.dto.Request.AuthenticationRequest;
 import com.backend.ecommerce.dto.Request.RegisterRequest;
 import com.backend.ecommerce.dto.Response.AuthenticationResponse;
-import com.backend.ecommerce.exception.UserAlreadyExistsException;
-import com.backend.ecommerce.exception.UserNotVerifiedException;
 import com.backend.ecommerce.model.Role;
 import com.backend.ecommerce.model.User;
 import com.backend.ecommerce.repository.TokenRepository;
@@ -47,7 +45,7 @@ public class AuthenticationService {
         boolean userExists = userRepository.existsByEmail(request.getEmail());
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new UserAlreadyExistsException("User with this email already exists.");
+            throw new RuntimeException("User with this email already exists.");
         }
         String verificationToken = UUID.randomUUID().toString();
 
@@ -70,7 +68,7 @@ public class AuthenticationService {
         boolean userExists = userRepository.existsByEmail(request.getEmail());
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new UserAlreadyExistsException("User with this email already exists.");
+            throw new RuntimeException("User with this email already exists.");
         }
         String verificationToken = UUID.randomUUID().toString();
         ;
@@ -103,7 +101,7 @@ public class AuthenticationService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         if (user.getStatus()==false){
-            throw new UserNotVerifiedException("User Didn't verify");
+            throw new RuntimeException("User Didn't verify");
         }
         cartService.getCart(user.getId());
         var jwtToken = jwtService.generateToken(user);
