@@ -33,8 +33,8 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Product> addProduct(@RequestBody Product product , @RequestParam long id) {
-        productService.addProduct(product,id);
+    public ResponseEntity<Product> addProduct(@RequestBody Product product , @RequestParam long categoryId) {
+        productService.addProduct(product,categoryId);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
