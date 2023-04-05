@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -27,6 +28,10 @@ public class UserService {
 
     public void deleteUserById(Integer id) {
         userRepository.deleteById(id);
+    }
+
+    public Optional<User> findByUserId(Integer id) {
+        return userRepository.findById(id);
     }
 }
 

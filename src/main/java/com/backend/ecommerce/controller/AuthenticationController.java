@@ -10,6 +10,7 @@ import com.backend.ecommerce.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -21,21 +22,21 @@ public class AuthenticationController {
 
     @Autowired
     private UserRepository userRepository;
-    private final AuthenticationService service;
+    private final AuthenticationService authenticationService;
 
 
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public ResponseEntity<String> register(
             @RequestBody RegisterRequest request
     ) {
-        return ResponseEntity.ok(service.registerUser(request));
+        return ResponseEntity.ok(authenticationService.registerUser(request));
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/signin")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request
     ) {
-        return ResponseEntity.ok(service.authenticate(request));
+        return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
     @GetMapping("/verify")

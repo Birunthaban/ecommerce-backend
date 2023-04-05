@@ -7,10 +7,12 @@ import com.backend.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -19,18 +21,13 @@ public class UserController {
     private UserService userService;
     @Autowired
     private EmailService mailService;
-
-    @GetMapping("/all")
-    public List<User> getAllUser() {
-        return userService.getAllUser();
+    public  ResponseEntity<User> getUserDetailsById(@RequestParam Integer id) {
+        Optional<User> user= userService.findByUserId(id);
+        return ResponseEntity.ok(user.get());
     }
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomerById(@PathVariable Integer id) {
-        userService.deleteUserById(id);
-        return ResponseEntity.noContent().build();
-    }
+
 
 
 }
