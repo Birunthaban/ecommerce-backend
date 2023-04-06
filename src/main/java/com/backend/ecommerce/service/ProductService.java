@@ -43,4 +43,21 @@ public class ProductService {
         return productRepository.findByCategoryId(categoryId);
     }
 
+    public Product updateProduct(Product product, long categoryId) {
+        Product existingProduct = productRepository.findById(product.getId()).orElse(null);
+        if (existingProduct != null) {
+            existingProduct.setName(product.getName());
+            existingProduct.setDescription(product.getDescription());
+            existingProduct.setPrice(product.getPrice());
+
+            Category category = categoryRepository.findById(categoryId).orElse(null);
+            if (category != null) {
+                existingProduct.setCategory(category);
+            }
+
+            productRepository.save(existingProduct);
+        }
+        return existingProduct;
+    }
+
 }

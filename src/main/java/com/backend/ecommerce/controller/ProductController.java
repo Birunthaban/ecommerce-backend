@@ -33,6 +33,14 @@ public class ProductController {
         productService.addProduct(product,categoryId);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
+    @PutMapping("/update")
+    public ResponseEntity<?> updateProduct(@RequestBody Product product, @RequestParam Long categoryId) {
+        Product updatedProduct = productService.updateProduct(product, categoryId);
+        if (updatedProduct == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedProduct);
+    }
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteProduct(@RequestParam Long id) {
         productService.deleteProduct(id);
