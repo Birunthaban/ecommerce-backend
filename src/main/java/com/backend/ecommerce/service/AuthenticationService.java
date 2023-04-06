@@ -17,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @Service
@@ -41,7 +42,7 @@ public class AuthenticationService {
 
 
 
-    public String registerUser(RegisterRequest request) {
+    public String registerUser(@Valid RegisterRequest request) {
         boolean userExists = userRepository.existsByEmail(request.getEmail());
 
         if (userRepository.existsByEmail(request.getEmail())) {

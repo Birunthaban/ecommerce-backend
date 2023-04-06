@@ -86,6 +86,7 @@ public class EmailService {
         Optional<Order> optionalOrder = orderRepository.findById(order_id);
         Order order = optionalOrder.orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + order_id));
 
+
         StringBuilder sb = new StringBuilder();
         for (OrderItem item : order.getOrderItems()) {
             sb.append("<tr>")
