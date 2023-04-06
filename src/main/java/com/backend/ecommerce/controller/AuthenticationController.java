@@ -11,13 +11,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Validated
 public class AuthenticationController {
 
     @Autowired
@@ -26,11 +33,11 @@ public class AuthenticationController {
 
 
     @PostMapping("/sign-up")
-    public ResponseEntity<String> register(
-            @RequestBody RegisterRequest request
-    ) {
-        return ResponseEntity.ok(authenticationService.registerUser(request));
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest request) {
+        String message = authenticationService.registerUser(request);
+        return ResponseEntity.ok(message);
     }
+
 
     @PostMapping("/sign-in")
     public ResponseEntity<AuthenticationResponse> authenticate(

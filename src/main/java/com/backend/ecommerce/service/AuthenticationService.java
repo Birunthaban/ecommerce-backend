@@ -42,7 +42,7 @@ public class AuthenticationService {
 
 
 
-    public String registerUser(@Valid RegisterRequest request) {
+    public String registerUser(RegisterRequest request) {
         boolean userExists = userRepository.existsByEmail(request.getEmail());
 
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -91,7 +91,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse authenticate(@Valid AuthenticationRequest request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
