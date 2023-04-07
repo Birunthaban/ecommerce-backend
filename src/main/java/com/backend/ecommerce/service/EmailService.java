@@ -43,28 +43,26 @@ public class EmailService {
         helper.setSubject(subject);
         helper.setText("<html>\n" +
                 "<head>\n" +
-                "	<title>UserEmail Confirmation</title>\n" +
-                "	<style>\n" +
-                "		.link-container {\n" +
-                "			border: 1px solid #ccc;\n" +
-                "			padding: 10px;\n" +
-                "			display: inline-block;\n" +
-                "			margin: 10px 0;\n" +
-                "		}\n" +
-                "		.link-container a {\n" +
-                "			color: #333;\n" +
-                "			text-decoration: none;\n" +
-                "		}\n" +
-                "	</style>\n" +
+                "	<title> Welcome </title>\n" +
                 "</head>\n" +
-                "<body>\n" +
-                "	<h2>Thank you for registering with our service!</h2>\n" +
-                "	<p>Please click on the link below to confirm your email address:</p>\n" +
-                "	<div class=\"link-container\">\n" +
-                "		<a href=\"" + verificationLink + "\">" + "Please click on this link to verify your account " + "</a>\n" +
-                "	</div>\n" +
+                "<body style=\"font-family: Arial, sans-serif;\">\n" +
+                "	<table style=\"border: 1px solid #ccc; padding: 10px;\">\n" +
+                "		<tr>\n" +
+                "			<td>\n" +
+                "				<h1 style=\"color: #333;\">Thank you for registering with our service!</h1>\n" + "<p><img src=\"https://cdn.templates.unlayer.com/assets/1636450033923-19197947.png\" alt=\"product image\" width=\"400\" height=\"400\"></p>"+
+                "<h3 style=\"color: #333;\">We're excited to have you get started! First, you need to confirm your account. Just click the button below.</h3>\n" +
+                "				<div style=\"background-color: #0096FF; padding: 10px; display: inline-block; margin: 10px 0;\">\n" +
+                "					<a href=\"" + verificationLink + "\" style=\"color: white; text-decoration: none;\">Click here to confirm your email address</a>\n" +
+                "				</div>\n" +
+                "<h3 style=\"color: #333;\">If you have any questions, please feel free to let us know - we're always ready to help out.</h3>\n" +
+                "\n" +
+                "<h3 style=\"color: #333;\">Cheers,</h3>\n" +
+                "<h3 style=\"color: #333;\">Oxygen Sports</h3>\n" +
+                "			</td>\n" +
+                "		</tr>\n" +
+                "	</table>\n" +
                 "</body>\n" +
-                "</html>",true);
+                "</html>", true);
 
         javaMailSender.send(message);
     }
@@ -151,7 +149,6 @@ public class EmailService {
 
         return sb.toString();
     }
-
 
 
 }
