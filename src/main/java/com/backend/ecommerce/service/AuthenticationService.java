@@ -32,18 +32,17 @@ public class AuthenticationService {
     @Autowired
     private final TokenRepository tokenRepository;
     @Autowired
-    private final PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     @Autowired
 
-    private final JwtService jwtService;
+    private JwtService jwtService;
     @Autowired
-    private final AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
     @Autowired
 
-    private final EmailService emailService;
+    private EmailService emailService;
     @Autowired
-    private final CartService cartService;
-
+    private CartService cartService;
 
 
     public String registerUser(RegisterRequest request) throws MessagingException {
@@ -65,8 +64,9 @@ public class AuthenticationService {
                 .build();
         var savedUser = userRepository.save(user);
         emailService.sendVerificationEmail(user.getEmail(), verificationToken);
-        return "Verify you email" ;
+        return "Verify you email";
     }
+
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -77,7 +77,7 @@ public class AuthenticationService {
 
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
-        if (user.getStatus()==false){
+        if (user.getStatus() == false) {
             throw new RuntimeException("User Didn't verify");
         }
         cartService.getCart(user.getId());
@@ -112,7 +112,6 @@ public class AuthenticationService {
         });
         tokenRepository.saveAll(validUserTokens);
     }
-
 
 
 }

@@ -120,23 +120,7 @@ public class EmailService {
     }
 
 
-    public void sendPasswordResetEmail(String userEmail, String resetToken) throws MessagingException {
-        // Construct the password reset link
-        String passwordResetLink = "http://localhost:8080/reset-password?token=" + resetToken;
 
-
-        // Construct the email message
-        String message = "Please click on the following link to reset your password: " + passwordResetLink;
-
-        // Send the email to the user
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-        helper.setTo(userEmail);
-        helper.setSubject("Password Reset");
-        helper.setText(message, true);
-        javaMailSender.send(mimeMessage);
-
-    }
     private String getProductDetails(Long order_id) {
         Optional<Order> optionalOrder = orderRepository.findById(order_id);
         Order order = optionalOrder.orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + order_id));
