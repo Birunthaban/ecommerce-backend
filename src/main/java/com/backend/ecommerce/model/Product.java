@@ -11,8 +11,57 @@ public class Product {
     private Long id;
     @Column(nullable = false)
     private String name;
+
+    public String getImage_1() {
+        return image_1;
+    }
+
+    public void setImage_1(String image_1) {
+        this.image_1 = image_1;
+    }
+
+    public String getImage_2() {
+        return image_2;
+    }
+
+    public void setImage_2(String image_2) {
+        this.image_2 = image_2;
+    }
+
+    public String getImage_3() {
+        return image_3;
+    }
+
+    public void setImage_3(String image_3) {
+        this.image_3 = image_3;
+    }
+
+    public String getImage_4() {
+        return image_4;
+    }
+
+    public void setImage_4(String image_4) {
+        this.image_4 = image_4;
+    }
+
+    public String getImage_5() {
+        return image_5;
+    }
+
+    public void setImage_5(String image_5) {
+        this.image_5 = image_5;
+    }
+
     @Column(nullable = false)
-    private String image_url;
+    private String image_1;
+    @Column(nullable = true)
+    private String image_2;
+    @Column(nullable = true)
+    private String image_3;
+    @Column(nullable = true)
+    private String image_4;
+    @Column(nullable = true)
+    private String image_5;
     @Column(nullable = false)
     private Double price;
     @Column(nullable = false)
@@ -20,8 +69,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-    @Column(nullable = false)
-    private Boolean available;
 
 
     public Category getCategory() {
@@ -44,13 +91,6 @@ public class Product {
         this.description = description;
     }
 
-    public Boolean getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(Boolean available) {
-        this.available = available;
-    }
 
 
 
@@ -71,13 +111,7 @@ public class Product {
         this.name = name;
     }
 
-    public String getImage_url() {
-        return image_url;
-    }
 
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
-    }
 
     public Double getPrice() {
         return price;
