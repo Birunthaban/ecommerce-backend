@@ -28,24 +28,6 @@ public class ProductController {
         }
         return ResponseEntity.ok(product);
     }
-    @PostMapping("/add")
-    public ResponseEntity<Product> addProduct(@RequestBody Product product , @RequestParam long categoryId) {
-        productService.addProduct(product,categoryId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(product);
-    }
-    @PutMapping("/update")
-    public ResponseEntity<?> updateProduct(@RequestBody Product product, @RequestParam Long categoryId) {
-        Product updatedProduct = productService.updateProduct(product, categoryId);
-        if (updatedProduct == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(updatedProduct);
-    }
-    @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteProduct(@RequestParam Long id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.noContent().build();
-    }
     @GetMapping("/search")
     public ResponseEntity<List<Product>> searchProductsByName(@RequestParam String query) {
         List<Product> products = productService.searchProductsByName(query);

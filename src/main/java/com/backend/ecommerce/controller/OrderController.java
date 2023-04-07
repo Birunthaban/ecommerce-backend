@@ -15,11 +15,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> orders = orderService.getAllOrders();
-        return ResponseEntity.ok().body(orders);
-    }
+
 
     @PostMapping("/checkout")
     public ResponseEntity<String> processCheckout(@RequestParam Integer userId,@RequestParam Long cartId, @RequestBody Address address) {
