@@ -16,6 +16,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/sign-up")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest request) throws MessagingException {
         String message = authenticationService.registerUser(request);
         return ResponseEntity.ok(message);
     }

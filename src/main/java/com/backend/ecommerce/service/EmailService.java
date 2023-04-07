@@ -61,7 +61,7 @@ public class EmailService {
                 "	<h2>Thank you for registering with our service!</h2>\n" +
                 "	<p>Please click on the link below to confirm your email address:</p>\n" +
                 "	<div class=\"link-container\">\n" +
-                "		<a href=\"" + verificationLink + "\">" + verificationLink + "</a>\n" +
+                "		<a href=\"" + verificationLink + "\">" + "Please click on this link to verify your account " + "</a>\n" +
                 "	</div>\n" +
                 "</body>\n" +
                 "</html>",true);
