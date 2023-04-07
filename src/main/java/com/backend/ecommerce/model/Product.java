@@ -12,6 +12,25 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
+    @Column(nullable = false)
+    private String image_1;
+    @Column(nullable = true)
+    private String image_2;
+    @Column(nullable = true)
+    private String image_3;
+    @Column(nullable = true)
+    private String image_4;
+    @Column(nullable = true)
+    private String image_5;
+    @Column(nullable = false)
+    private Double price;
+    @Column(nullable = false)
+    private String description;
+
     public String getImage_1() {
         return image_1;
     }
@@ -51,24 +70,6 @@ public class Product {
     public void setImage_5(String image_5) {
         this.image_5 = image_5;
     }
-
-    @Column(nullable = false)
-    private String image_1;
-    @Column(nullable = true)
-    private String image_2;
-    @Column(nullable = true)
-    private String image_3;
-    @Column(nullable = true)
-    private String image_4;
-    @Column(nullable = true)
-    private String image_5;
-    @Column(nullable = false)
-    private Double price;
-    @Column(nullable = false)
-    private String description;
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
 
 
     public Category getCategory() {

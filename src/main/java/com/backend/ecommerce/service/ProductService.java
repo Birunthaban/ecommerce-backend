@@ -8,6 +8,7 @@ import com.backend.ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,6 +59,26 @@ public class ProductService {
             productRepository.save(existingProduct);
         }
         return existingProduct;
+    }
+    public List<Product> getRelatedProducts(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid product id: " + productId));
+
+        List<Product> relatedProducts = new ArrayList<>();
+
+        if (product.getCategory() != null) {
+            List<Product> productsInCategory = productRepository.findByCategoryId(product.getCategory().getId());
+            for (Product p : productsInCategory) {
+                if (!p.getId().equals(productId)) {
+                    relatedProducts.add(p);
+                }
+                if (relatedProducts.size() == 5) {
+                    break;
+                }
+            }
+        }
+
+        return relatedProducts;
     }
 
 }

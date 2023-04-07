@@ -44,4 +44,9 @@ public class ProductController {
         }
         return ResponseEntity.ok(products);
     }
+    @GetMapping("/related")
+    public ResponseEntity<List<Product>> getRelatedProducts(@RequestParam Long productId) {
+        List<Product> relatedProducts = productService.getRelatedProducts(productId);
+        return ResponseEntity.ok(relatedProducts);
+    }
 }
