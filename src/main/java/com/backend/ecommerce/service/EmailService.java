@@ -49,7 +49,7 @@ public class EmailService {
                 "	<table style=\"border: 1px solid #ccc; padding: 10px;\">\n" +
                 "		<tr>\n" +
                 "			<td>\n" +
-                "				<h1 style=\"color: #333;\">Thank you for registering with our service!</h1>\n" + "<p><img src=\"https://cdn.templates.unlayer.com/assets/1636450033923-19197947.png\" alt=\"product image\" width=\"400\" height=\"400\"></p>"+
+                "				<h1 style=\"color: #333;\">Thank you for registering with our service!</h1>\n" + "<p><img src=\"https://cdn.templates.unlayer.com/assets/1636450033923-19197947.png\" alt=\"product image\" width=\"400\" height=\"400\"></p>" +
                 "<h3 style=\"color: #333;\">We're excited to have you get started! First, you need to confirm your account. Just click the button below.</h3>\n" +
                 "				<div style=\"background-color: #0096FF; padding: 10px; display: inline-block; margin: 10px 0;\">\n" +
                 "					<a href=\"" + verificationLink + "\" style=\"color: white; text-decoration: none;\">Click here to confirm your email address</a>\n" +
@@ -111,19 +111,32 @@ public class EmailService {
     }
 
 
-    public void sendConfirmationEmail(Long orderId, String email) {
-        try {
-            // Create the email message
-            MimeMessage message = createConfirmationMessage(orderId, email);
+    public void sendConfirmationEmail(Long orderId, String email) throws MessagingException {
+        // Create the email message
+        MimeMessage message = createConfirmationMessage(orderId, email);
 
-            // Send the email
-            javaMailSender.send(message);
-        } catch (MessagingException e) {
-            // If an exception occurs, wrap it in a runtime exception and re-throw it
-            throw new RuntimeException("Failed to send confirmation email", e);
-        }
+        // Send the email
+        javaMailSender.send(message);
     }
 
+
+    public void sendPasswordResetEmail(String userEmail, String resetToken) throws MessagingException {
+        // Construct the password reset link
+        String passwordResetLink = "http://localhost:8080/reset-password?token=" + resetToken;
+
+
+        // Construct the email message
+        String message = "Please click on the following link to reset your password: " + passwordResetLink;
+
+        // Send the email to the user
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+        helper.setTo(userEmail);
+        helper.setSubject("Password Reset");
+        helper.setText(message, true);
+        javaMailSender.send(mimeMessage);
+
+    }
     private String getProductDetails(Long order_id) {
         Optional<Order> optionalOrder = orderRepository.findById(order_id);
         Order order = optionalOrder.orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + order_id));
@@ -149,6 +162,4 @@ public class EmailService {
 
         return sb.toString();
     }
-
-
 }

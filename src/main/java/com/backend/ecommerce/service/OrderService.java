@@ -6,6 +6,7 @@ import com.backend.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -93,7 +94,7 @@ public class OrderService {
         orderRepository.delete(order);
     }
 
-    public void checkout(Integer userId, Long cartId, Address address) {
+    public void checkout(Integer userId, Long cartId, Address address) throws MessagingException {
         Order order = this.placeOrder(cartId, address);
 
         Optional<User> savedUser = userRepository.findById(userId);

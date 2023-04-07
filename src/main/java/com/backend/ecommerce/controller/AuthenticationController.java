@@ -7,6 +7,7 @@ import com.backend.ecommerce.dto.Response.AuthenticationResponse;
 import com.backend.ecommerce.model.User;
 import com.backend.ecommerce.repository.UserRepository;
 import com.backend.ecommerce.service.AuthenticationService;
+import com.backend.ecommerce.service.PasswordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,8 @@ public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
     private final AuthenticationService authenticationService;
+    @Autowired
+    private PasswordService passwordService;
 
 
     @PostMapping("/sign-up")
@@ -62,5 +65,17 @@ public class AuthenticationController {
 
         return ResponseEntity.ok("Your email has been verified. You can now log in.");
     }
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestParam String email) throws MessagingException {
+       passwordService.sendResetPasswordEmail(email);
+        return ResponseEntity.ok("Email sent to reset password.");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestParam String token, @RequestBody String newPassword) {
+        passwordService.resetPassword(token, newPassword);
+        return ResponseEntity.ok("Password reset successful.");
+    }
+
 
 }
