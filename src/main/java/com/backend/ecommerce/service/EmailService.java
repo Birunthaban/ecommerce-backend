@@ -75,7 +75,7 @@ public class EmailService {
         String customerName = existingOrder.get().getUser().getFirstname();
         String contactEmail = "support@oxygen.sports.com";
         String companyName = "Oxygen Sports";
-        String orderDetails = getProductDetails(order_id);
+        String orderDetails = getOrderDetails(order_id);
 
         String htmlMessage = "<html><body>"
                 + "<div style=\"font-family: Arial, sans-serif; font-size: 14px;\">"
@@ -121,7 +121,7 @@ public class EmailService {
 
 
 
-    private String getProductDetails(Long order_id) {
+    private String getOrderDetails(Long order_id) {
         Optional<Order> optionalOrder = orderRepository.findById(order_id);
         Order order = optionalOrder.orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + order_id));
 
@@ -142,6 +142,17 @@ public class EmailService {
         sb.append("<tr>")
                 .append("<td colspan=\"3\"><b>Total Price</b></td>")
                 .append("<td><b>Rs :").append(totalPrice).append("</b></td>")
+                .append("</tr><br><br><br><br>");
+
+        // Append address information
+        sb.append("<tr>")
+                .append("<td colspan=\"4\"><b>Shipping Address</b></td>")
+                .append("</tr>")
+                .append("<tr>")
+                .append("<td>").append("Door Number: ").append(order.getAddress().getDoorNumber()).append("</td>")
+                .append("<td>").append("Street: ").append(order.getAddress().getStreet()).append("</td>")
+                .append("<td>").append("City: ").append(order.getAddress().getCity()).append("</td>")
+                .append("<td>").append("District: ").append(order.getAddress().getDistrict()).append("</td>")
                 .append("</tr>");
 
         return sb.toString();
