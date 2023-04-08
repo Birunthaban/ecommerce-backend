@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @RestController
@@ -29,6 +30,23 @@ public class OrderController {
         orderService.deleteOrderById(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/all")
+    public ResponseEntity<List<Order>> getOrdersByUserId(@RequestParam Integer userId) {
+        List<Order> orders = orderService.getOrdersByUserId(userId);
+        if (orders.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(orders);
+        }
+    }
+
+
+
+
+
+
+
+
 
 
 }

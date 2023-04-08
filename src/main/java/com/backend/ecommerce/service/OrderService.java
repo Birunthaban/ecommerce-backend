@@ -107,6 +107,13 @@ public class OrderService {
     }
 
 
+    public List<Order> getOrdersByUserId(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        List<Order> orders = orderRepository.findByUser(user);
+        return orders;
+    }
+
 }
 
 
