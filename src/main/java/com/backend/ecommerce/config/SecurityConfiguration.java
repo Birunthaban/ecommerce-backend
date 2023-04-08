@@ -1,6 +1,8 @@
 package com.backend.ecommerce.config;
 
+import com.backend.ecommerce.model.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -29,8 +31,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .antMatchers("/auth/**")
                 .permitAll()
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/admin/**").hasAuthority(String.valueOf(Role.ADMIN))
+                .anyRequest().authenticated()
 
                 .and()
                 .sessionManagement()

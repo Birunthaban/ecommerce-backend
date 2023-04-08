@@ -21,6 +21,7 @@ public class UserController {
     private UserService userService;
     @Autowired
     private EmailService mailService;
+    @GetMapping
     public  ResponseEntity<User> getUserDetailsById(@RequestParam Integer id) {
         Optional<User> user= userService.findByUserId(id);
         return ResponseEntity.ok(user.get());

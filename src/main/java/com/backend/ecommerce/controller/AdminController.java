@@ -18,7 +18,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
     @Autowired
     private  UserService userService;
@@ -29,6 +28,7 @@ public class AdminController {
     @Autowired
     private CategoryService categoryService;
     @GetMapping("/users/get")
+
     public List<User> getAllUser() {
         return userService.getAllUser();
     }
