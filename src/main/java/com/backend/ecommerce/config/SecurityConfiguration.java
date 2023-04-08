@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/products/search/**")
+                .antMatchers("/user/products/**")
                 .permitAll()
                 .antMatchers("/admin/**").hasAuthority(String.valueOf(Role.ADMIN))
                 .anyRequest().authenticated()
